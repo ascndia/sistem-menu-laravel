@@ -21,7 +21,7 @@ class Group extends Model
 	};
 
 	public function count(){
-		return $this->products()->count();
+		return $this->items()->count();
 	};
 
 }
