@@ -18,10 +18,10 @@ class Group extends Model
 
 	public function items(){
 		return $this->hasMany(Item::class);
-	};
+	}
 
 	public function count(){
 		return $this->items()->count();
-	};
+	}
 
 }

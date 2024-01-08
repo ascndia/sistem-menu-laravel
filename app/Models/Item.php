@@ -14,6 +14,7 @@ class Item extends Model
 	protected $fillable = [
 		'name',
 		'price',
+		'image',
 		'description',
 		'showing',
 		'discount_nominal',
@@ -23,5 +24,5 @@ class Item extends Model
 	
 	public function group(){
 		return $this->hasOne(Group::class);
-	};
+	}
 }
