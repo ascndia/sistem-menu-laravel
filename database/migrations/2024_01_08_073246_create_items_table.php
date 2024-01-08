@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+		$table->id();
+		$table->string('name');
+		$table->text('description');
+		$table->integer('price');
+		$table->boolean('showing')->default(true);
+		$table->integer('discount_nominal')->default(0);
+		$table->decimal('discount_percentage')->default(0);
+		$table->foreignId('group_id')->references('id')->on('groups')->onDelete('cascade');
+                $table->timestamps();
         });
     }
 

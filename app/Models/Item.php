@@ -7,5 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
+	protected $table = 'items';
+
+	protected $fillable = [
+		'name',
+		'price',
+		'description',
+		'showing',
+		'discount_nominal',
+		'discount_percentage',
+		'group_id',
+	];
+	
+	public function group(){
+		return $this->hasOne(Group::class);
+	};
 }
