@@ -38,16 +38,33 @@ class ItemController extends Controller
 		'group_id' => 'required|integer',
 		'discount_nominal' => 'integer|min:0',
 		'discount_percentage' => 'numeric|between:0,100',
-		'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+		'image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 	    ]);
 
 	    if($validator->fails()) {
                 $errors = $validator->errors();
                 return redirect()->back()->withErrors($errors);
 	    };
+ 	
+	    //Item::create($request->all());
+	    
+	    $item = new Item;
 
-	    Item::create($request->all());
+	    if ($request->hasFile('image')){
+		    $image = $request->file('image');
+		    $randomid = date('YmdHis') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+		    $path = $image->storeAs('public/images', $randomid);
+		    $item->image = $path;
+	    }
 
+	    $item->name = $request->name;
+	    $item->description = $request->description;
+	    $item->showing = $request->showing;
+	    $item->group_id = $request->group_id;
+	    $item->discount_nominal = $request->discount_nominal;
+	    $item->discount_percentage = $request->discount_percentage;
+
+	    $item->save();
     }
 
     /**
