@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
+use Illuminate\Support\Facades\Validator;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,25 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+	    //
+	    $validator = Validator::make($request->all(),[
+		'name' => 'required|string|unique:items',
+		'price' => 'required|numeric|min:0',
+		'description' => 'string',
+		'showing' => 'boolean',
+		'group_id' => 'required|integer',
+		'discount_nominal' => 'integer|min:0',
+		'discount_percentage' => 'numeric|between:0,100',
+		'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+	    ]);
+
+	    if($validator->fails()) {
+                $errors = $validator->errors();
+                return redirect()->back()->withErrors($errors);
+	    };
+
+	    Item::create($request->all());
+
     }
 
     /**
@@ -60,6 +79,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+	    //
+	    $item->delete();
     }
 }
