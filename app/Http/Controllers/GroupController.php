@@ -62,4 +62,14 @@ class GroupController extends Controller
     {
         //
     }
+
+    /**
+     * Toggle item 'showing' state in the database
+     */
+    public function toggleShowing(Group $group)
+    {
+        $group->toggleShowing();
+
+        return response()->json(['message' => 'Showing attribute toggled successfully', 'id' => $group->id]);
+    }
 }

@@ -24,4 +24,10 @@ class Group extends Model
 		return $this->items()->count();
 	}
 
+	public function toggleShowing()
+    {
+        $this->showing = !$this->showing;
+        $this->save();
+    }
+
 }
