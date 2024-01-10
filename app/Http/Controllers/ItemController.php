@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use App\DataTables\ItemDataTable;
 
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            return datatables()->of(Item::all())->toJson();
+        }
         return view('admin.items');
     }
 
@@ -103,8 +106,7 @@ class ItemController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-            // Redirect back with validation errors and old input
+            return redirect()->back()->withErrors($validator);
         }
         
         if ($request->hasFile('image')){

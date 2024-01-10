@@ -33,10 +33,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
+    Route::get('/',[AdminController::class,'dashboard']);
     Route::get('dashboard',[AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('group',[GroupController::class]);
+    Route::resource('group',GroupController::class);
     Route::post('/group/{group}/toggle-showing',[GroupController::class, 'toggleShowing'])->name('group.toggleShowing');
-    Route::resource('item',[ItemController::class])->except(['show','create','edit']);
+    Route::resource('item',ItemController::class)->except(['show','create','edit']);
     Route::post('/item/{item}/toggle-showing',[ItemController::class, 'toggleShowing'])->name('item.toggleShowing');
 });
 

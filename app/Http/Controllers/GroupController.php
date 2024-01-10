@@ -13,6 +13,7 @@ class GroupController extends Controller
     public function index()
     {
         //
+        return view('admin.groups');
     }
 
     /**
@@ -20,7 +21,16 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|unique:groups',
+            'showing' => 'nullable|boolean'
+	    ]);
+
+        if($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        Group::create($request->all());
     }
 
     /**
