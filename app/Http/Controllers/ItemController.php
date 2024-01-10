@@ -33,14 +33,14 @@ class ItemController extends Controller
     {
 	    //
 	    $validator = Validator::make($request->all(),[
-		'name' => 'required|string|unique:items',
-		'price' => 'required|numeric|min:0',
-		'description' => 'nullable|string',
-		'showing' => 'nullable|boolean',
-		'group_id' => 'required|integer',
-		'discount_nominal' => 'nullable|integer|min:0',
-		'discount_percentage' => 'nullable|numeric|between:0,100',
-		'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
+            'name' => 'required|string|unique:items',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'showing' => 'nullable|boolean',
+            'group_id' => 'required|integer',
+            'discount_nominal' => 'nullable|integer|min:0',
+            'discount_percentage' => 'nullable|numeric|between:0,100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
 	    ]);
 
 	    if($validator->fails()) {
@@ -90,7 +90,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+    
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|unique:items',
             'price' => 'required|numeric|min:0',
@@ -100,7 +100,7 @@ class ItemController extends Controller
             'discount_nominal' => 'nullable|integer|min:0',
             'discount_percentage' => 'nullable|numeric|between:0,100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
-            ]);
+        ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -133,4 +133,15 @@ class ItemController extends Controller
 	    //
 	    $item->delete();
     }
+
+    /**
+     * Toggle item 'showing' state in the database
+     */
+    public function toggleShowing(Item $item)
+    {
+        $item->toggleShowing();
+
+        return response()->json(['message' => 'Showing attribute toggled successfully', 'id' => $item->id]);
+    }
+
 }

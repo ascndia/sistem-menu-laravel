@@ -25,4 +25,10 @@ class Item extends Model
 	public function group(){
 		return $this->hasOne(Group::class);
 	}
+
+	public function toggleShowing()
+    {
+        $this->showing = !$this->showing;
+        $this->save();
+    }
 }
