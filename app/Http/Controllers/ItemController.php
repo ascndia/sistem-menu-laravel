@@ -14,6 +14,7 @@ class ItemController extends Controller
     public function index()
     {
         //
+        return view('admin.items');
     }
 
     /**
@@ -22,6 +23,7 @@ class ItemController extends Controller
     public function create()
     {
         //
+    
     }
 
     /**
@@ -33,12 +35,12 @@ class ItemController extends Controller
 	    $validator = Validator::make($request->all(),[
 		'name' => 'required|string|unique:items',
 		'price' => 'required|numeric|min:0',
-		'description' => 'string',
-		'showing' => 'boolean',
+		'description' => 'nullable|string',
+		'showing' => 'nullable|boolean',
 		'group_id' => 'required|integer',
-		'discount_nominal' => 'integer|min:0',
-		'discount_percentage' => 'numeric|between:0,100',
-		'image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
+		'discount_nominal' => 'nullable|integer|min:0',
+		'discount_percentage' => 'nullable|numeric|between:0,100',
+		'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
 	    ]);
 
 	    if($validator->fails()) {
@@ -89,6 +91,38 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         //
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|unique:items',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'showing' => 'nullable|boolean',
+            'group_id' => 'required|integer',
+            'discount_nominal' => 'nullable|integer|min:0',
+            'discount_percentage' => 'nullable|numeric|between:0,100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+            // Redirect back with validation errors and old input
+        }
+        
+        if ($request->hasFile('image')){
+
+            // delete old image if exist
+            if ($item->image && Storage::exists($item->image)) {
+                Storage::delete($item->image);
+            }
+
+		    $image = $request->file('image');
+		    $randomid = date('YmdHis') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+		    $path = $image->storeAs('public/images', $randomid);
+		    $item->image = $path;
+
+	    }
+
+        return redirect()->route('items.index', $item->id)->with('success', 'Item updated successfully');
+
     }
 
     /**
