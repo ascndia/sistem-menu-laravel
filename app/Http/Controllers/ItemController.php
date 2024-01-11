@@ -15,7 +15,11 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            return datatables()->of(Item::all())->toJson();
+            return datatables()->of(Item::all())->addColumn('action', function($item){
+                return 
+                '<a class="btn btn-secondary" href="'.route('item.edit',$item->id) .'"><i class=" bi bi-pencil-square"></i></a>
+                <a class="btn btn-danger" href="'.route('item.destroy',$item->id) .'"><i class="bi bi-trash"></i></a>';
+            })->rawColumns(['action'])->toJson();
         }
         return view('admin.items');
     }
@@ -26,6 +30,7 @@ class ItemController extends Controller
     public function create()
     {
         //
+        return view('admin.create-item');
     
     }
 
@@ -86,6 +91,7 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         //
+        return view('admin.edit-item');
     }
 
     /**
