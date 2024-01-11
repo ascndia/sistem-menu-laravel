@@ -69,7 +69,7 @@
     <style>
         #yourTable_length select {
             background-position: right center;
-            padding-right: 5px;
+            padding-right: 0px;
         }
 
         #yourTable td {
@@ -78,24 +78,6 @@
 
   	/* Add custom CSS for smaller screens */
   	@media screen and (max-width: 767px) {
-
-		#yourTable {
-			width: 100%;
-			background-color: blue;
-		}
-
- 		div.dataTables_wrapper {
-			width: 100%;
-		}
-
-    		div.dataTables_filter input {
-      			max-width: 50px;
-    		}
-
-		div.dataTables_filter button {
-      			flex-shrink: 0;
-		}
-
   	}
     </style>
 @endpush                                                      
