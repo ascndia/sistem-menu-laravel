@@ -16,7 +16,7 @@
 @endpush
 
 @section('main-content')
-    <div class="w-100 table-responsive">
+    <div class="w-100 table-responsive  p-2">
         <table id="yourTable" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -78,24 +78,19 @@
 
   	/* Add custom CSS for smaller screens */
   	@media screen and (max-width: 767px) {
-
-		#yourTable {
-			width: 100%;
-			background-color: blue;
-		}
-
- 		div.dataTables_wrapper {
-			width: 100%;
-		}
+		 
+		div.dataTables_filter {
+     			display: flex;
+      			align-items: center;
+    		}
 
     		div.dataTables_filter input {
-      			max-width: 50px;
+      			max-width: 100px;
     		}
 
 		div.dataTables_filter button {
       			flex-shrink: 0;
 		}
-
   	}
     </style>
 @endpush                                                      

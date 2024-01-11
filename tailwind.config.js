@@ -9,7 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
-    darkMode: 'class',
+    darkdnMode: 'class',
 
     theme: {
         extend: {

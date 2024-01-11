@@ -10,7 +10,8 @@
   <title>@yield('title','Ruwww')</title>
  
   <!-- AdminKit CSS file -->
-  <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link href="css/min.css" rel="stylesheet">
   @stack('css-top')
   @stack('script-top')
 
@@ -18,15 +19,16 @@
 <body>
   <div class="wrapper">
   	@include('partials.admin.sidebar')
-	@include('partials.admin.navbar')
-	<main class="content">
-		@yield('main-content')
-	</main>
-	@include('partials.admin.footer')
+	<div class="main">
+		@include('partials.admin.navbar')
+        	<main class="content">
+                	@yield('main-content')
+        	</main>                                                                     @include('partials.admin.footer')
+	</div>
   </div>
   @stack('css-bot')
   <!-- AdminKit JS file -->
-  <script src="{{ mix('js/admin.js') }}"></script>
+  <script src="{{ asset('js/admin.js') }}"></script>
   @stack('script-bot')
 </body>
 </html>
