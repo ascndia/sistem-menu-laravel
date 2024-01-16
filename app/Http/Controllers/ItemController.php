@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
  
 use Illuminate\Support\Facades\Validator;
 use App\Models\Item;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\DataTables\ItemDataTable;
 
@@ -29,8 +30,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.create-item');
+        
+        $groups = Group::all();
+        return view('admin.create-item',compact('groups'));
     
     }
 
