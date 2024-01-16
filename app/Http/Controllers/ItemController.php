@@ -59,8 +59,8 @@ class ItemController extends Controller
 	    };
  	
 	    //Item::create($request->all());
-	    
-	    $item = new Item;
+	      
+	    $item = Item::create($request->except('image'));
 
 	    if ($request->hasFile('image')){
 		    $image = $request->file('image');
@@ -68,13 +68,6 @@ class ItemController extends Controller
 		    $path = $image->storeAs('public/images', $randomid);
 		    $item->image = $path;
 	    }
-
-	    $item->name = $request->name;
-	    $item->description = $request->description;
-	    $item->showing = $request->showing;
-	    $item->group_id = $request->group_id;
-	    $item->discount_nominal = $request->discount_nominal;
-	    $item->discount_percentage = $request->discount_percentage;
 
 	    $item->save();
     }
