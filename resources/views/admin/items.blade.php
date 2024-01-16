@@ -6,7 +6,7 @@
 @endpush
 
 @push('css-top')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 <link rel="canonical" href="https://demo-basic.adminkit.io/" />
@@ -39,6 +39,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>nama item</th>
+                                        <th>deskripsi</th>
                                         <th>harga</th>
                                         <th>showing</th>
                                         <th>gambar</th>
@@ -77,6 +78,7 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
+                    { data: 'description', name: 'description' },
                     { data: 'price', name: 'price' },
                     { data: 'showing', name: 'showing' },
                     { data: 'image', name: 'image' },
@@ -94,6 +96,10 @@
 
 @push('css-bot')
     <style>
+        .action-delete, .action-edit {
+            cursor: pointer;    
+        }
+
         #yourTable_length select {
             background-position: right center;
             padding-right: 0px;

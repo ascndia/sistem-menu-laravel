@@ -18,8 +18,8 @@ class ItemController extends Controller
         if($request->ajax()){
             return datatables()->of(Item::all())->addColumn('action', function($item){
                 return 
-                '<a class="btn btn-secondary" href="'.route('item.edit',$item->id) .'"><i class=" bi bi-pencil-square"></i></a>
-                <a class="btn btn-danger" href="'.route('item.destroy',$item->id) .'"><i class="bi bi-trash"></i></a>';
+                '<i class="action-edit bg-secondary text-white me-1 p-1 bi bi-pencil-square"></i>
+                <i class="action-delete bg-danger text-white p-1 bi bi-trash"></i>';
             })->rawColumns(['action'])->toJson();
         }
         return view('admin.items');
@@ -41,7 +41,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-	    //
+        // validation
 	    $validator = Validator::make($request->all(),[
             'name' => 'required|string|unique:items',
             'price' => 'required|numeric|min:0',
@@ -55,21 +55,27 @@ class ItemController extends Controller
 
 	    if($validator->fails()) {
                 $errors = $validator->errors();
-                return redirect()->back()->withErrors($errors);
+                return redirect()->back()->withInput()->withErrors($errors);
 	    };
  	
 	    //Item::create($request->all());
 	      
 	    $item = Item::create($request->except('image'));
+        
 
 	    if ($request->hasFile('image')){
 		    $image = $request->file('image');
 		    $randomid = date('YmdHis') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 		    $path = $image->storeAs('public/images', $randomid);
-		    $item->image = $path;
+		    $item->image = $randomid;
 	    }
 
 	    $item->save();
+
+        return redirect()->back()->with([
+            'success' => 'succesfully added',
+            'data' => $item
+        ]);
     }
 
     /**
