@@ -13,7 +13,7 @@
                         @csrf
                             <div class="mb-3">
                                 <label for="" class="form-label">Item name</label>
-                                <input type="text" placeholder="Item name" class="form-control">
+                                <input type="text" placeholder="Item name" class="form-control">                                
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Item Description</label>
@@ -48,7 +48,7 @@
                                     <input type="number" value="0" placeholder="Discount Percentage" class="form-control">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Create Item</button>
                         </form>
                     </div>
                 </div>
