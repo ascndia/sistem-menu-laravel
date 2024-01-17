@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="col-6">
                                     <label for="" class="form-label">Item Group</label>
-                                    <select id="modal-edit-group" name="group_id" value="{{ old('group_id') }}" class="form-select" aria-label="Default select example">
+                                    <select id="modal-edit-group" name="group_id" value="" class="form-select" aria-label="Default select example">
                                     <option value="" disabled selected>select group</option>
                                         @foreach($groups as $group)
                                             <option value="{{ $group->id }}">{{ $group->name }}</option>

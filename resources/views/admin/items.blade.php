@@ -55,7 +55,7 @@
     </div>
 
     <!-- Modal section -->
-    @include('admin.component.edit')
+    @include('admin.component.edit', ['groups' => $groups ])
     @include('admin.component.delete')
     	
 @endsection
@@ -93,29 +93,29 @@
             
         });
 
-        $(document).on('click', '.action-edit', function($this){
+        $(document).on('click', '.action-edit', function() {
 
-	    let id = $(this).data('id')
-	    let name = $(this).data('name'))
-	    let price = $(this).data('price')
-	    let description = $(this).data('description')
-	    let dp = $(this).data('discount_percentage')
-	    let dn = $(this).data('discount_nominal')
-	    let gname = $(this).data('group-name')
-	    let gid = $(this).data('group-id')
-	    let image = $(this).data('image')
+            let id = $(this).data('id')
+            let name = $(this).data('name')
+            let price = $(this).data('price')
+            let description = $(this).data('description')
+            let dp = $(this).data('discount-percentage')
+            let dn = $(this).data('discount-nominal')
+            let gname = $(this).data('group-name')
+            let gid = $(this).data('group-id')
+            let image = $(this).data('image')
 
-	    $('modal-edit-id').val(id)
-	    $('modal-edit-name').val(name)
-	    $('modal-edit-price').val(price)
-	    $('modal-edit-description').val(description)
-	    $('modal-edit-discount-nominal').val(dn)
-	    $('modal-edit-discount-percentage').val(dp)
-	    $('modal-edit-group').val(gid)
-	    $('modal-edit-group').text(gname)
-	    $('modal-edit-image').val(image)
-		
-            $('#edit-modal').modal('toggle');
+            $('#modal-edit-id').val(id)
+            $('#modal-edit-name').val(name)
+            $('#modal-edit-price').val(price)
+            $('#modal-edit-description').val(description)
+            $('#modal-edit-discount-nominal').val(dn)
+            $('#modal-edit-discount-percentage').val(dp)
+            $('#modal-edit-group').val(gid)
+            $('#modal-edit-group').text(gname)
+            // $('#modal-edit-image').val(image)
+            
+            $('#edit-modal').modal('toggle')
         })
     </script>
 @endpush
