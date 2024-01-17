@@ -69,20 +69,20 @@
                         @csrf
                             <div class="mb-3">
                                 <label for="" class="form-label">Item name</label>
-                                <input name="name" value="{{ old('name') }}" type="text" placeholder="Item name" class="form-control">                                
+                                <input id="modal-edit-name" name="name" value="{{ old('name') }}" type="text" placeholder="Item name" class="form-control">                                
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Item Description</label>
-                                <input value="{{ old('description') }}"  name="description" type="text" placeholder="Item Description" class="form-control">
+                                <input id="modal-edit-description" value="{{ old('description') }}"  name="description" type="text" placeholder="Item Description" class="form-control">
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label for="" class="form-label">Item Price</label>
-                                    <input name="price" value="{{ old('price') }}" type="number" placeholder="Item Price" class="form-control">
+                                    <input id="modal-edit-price" name="price" value="{{ old('price') }}" type="number" placeholder="Item Price" class="form-control">
                                 </div>
                                 <div class="col-6">
                                     <label for="" class="form-label">Item Group</label>
-                                    <select name="group_id" value="{{ old('group_id') }}" class="form-select" aria-label="Default select example">
+                                    <select id="modal-edit-group" name="group_id" value="{{ old('group_id') }}" class="form-select" aria-label="Default select example">
                                     <option value="" disabled selected>select group</option>
                                         @foreach($groups as $group)
                                             <option value="{{ $group->id }}">{{ $group->name }}</option>
@@ -92,16 +92,16 @@
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Upload Image</label>
-                                <input name="image" value="{{ old('image') }}" type="file" placeholder="Upload image" class="form-control">
+                                <input id="modal-edit-image" name="image" value="{{ old('image') }}" type="file" placeholder="Upload image" class="form-control">
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label for="" class="form-label">Discount Nominal</label>
-                                    <input value="{{ old('discount_nominal', 0) }}" name="discount_nominal" type="number" value="0" placeholder="Discount Nominal" class="form-control">
+                                    <input id="modal-edit-discount-nominal" value="{{ old('discount_nominal', 0) }}" name="discount_nominal" type="number" value="0" placeholder="Discount Nominal" class="form-control">
                                 </div>
                                 <div class="col-6">
                                     <label for="" class="form-label">Discount Percentage</label>
-                                    <input step="0.01" value="{{ old('discount_percentage', 0)  }}" name="discount_percentage" type="number" value="0" placeholder="Discount Percentage" class="form-control">
+                                    <input id="modal-edit-discount-percentage" step="0.01" value="{{ old('discount_percentage', 0)  }}" name="discount_percentage" type="number" value="0" placeholder="Discount Percentage" class="form-control">
                                 </div>
                             </div>
                         </form>
@@ -124,6 +124,7 @@
 
 @push("script-bot")
     <script>
+
         $(document).ready(function () {
             $('#yourTable').DataTable({
                 searching: true,
@@ -149,10 +150,27 @@
         });
 
         $(document).on('click', '.action-edit', function($this){
-            console.log($(this).data('id'))
-            console.log($(this).data('name'))
-            console.log($(this).data('price'))
-            console.log($(this).data('group-name'))
+
+	    let id = $(this).data('id')
+	    let name = $(this).data('name'))
+	    let price = $(this).data('price')
+	    let description = $(this).data('description')
+	    let dp = $(this).data('discount_percentage')
+	    let dn = $(this).data('discount_nominal')
+	    let gname = $(this).data('group-name')
+	    let gid = $(this).data('group-id')
+	    let image = $(this).data('image')
+
+	    $('modal-edit-id').val(id)
+	    $('modal-edit-name').val(name)
+	    $('modal-edit-price').val(price)
+	    $('modal-edit-description').val(description)
+	    $('modal-edit-discount-nominal').val(dn)
+	    $('modal-edit-discount-percentage').val(dp)
+	    $('modal-edit-group').val(gid)
+	    $('modal-edit-group').text(gname)
+	    $('modal-edit-image').val(image)
+		
             $('#edit-modal').modal('toggle');
         })
     </script>
