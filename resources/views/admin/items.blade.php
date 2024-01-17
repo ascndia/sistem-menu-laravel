@@ -2,19 +2,14 @@
 
 @section('title','Items')
 
-@push('script-top')                                                           
-@endpush
 
 @push('css-top')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">                                                       
 <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 <link rel="canonical" href="https://demo-basic.adminkit.io/" />
-@endpush
-
-
-@push('css-top')                                                                 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">                                                       
 @endpush
 
 @section('main-content')
@@ -58,15 +53,76 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal section -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                    <button type="btn" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="post" action=" {{ route('item.store') }} "  enctype="multipart/form-data">	
+                        @csrf
+                            <div class="mb-3">
+                                <label for="" class="form-label">Item name</label>
+                                <input name="name" value="{{ old('name') }}" type="text" placeholder="Item name" class="form-control">                                
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Item Description</label>
+                                <input value="{{ old('description') }}"  name="description" type="text" placeholder="Item Description" class="form-control">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="" class="form-label">Item Price</label>
+                                    <input name="price" value="{{ old('price') }}" type="number" placeholder="Item Price" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label for="" class="form-label">Item Group</label>
+                                    <select name="group_id" value="{{ old('group_id') }}" class="form-select" aria-label="Default select example">
+                                    <option value="" disabled selected>select group</option>
+                                        @foreach($groups as $group)
+                                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Upload Image</label>
+                                <input name="image" value="{{ old('image') }}" type="file" placeholder="Upload image" class="form-control">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="" class="form-label">Discount Nominal</label>
+                                    <input value="{{ old('discount_nominal', 0) }}" name="discount_nominal" type="number" value="0" placeholder="Discount Nominal" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label for="" class="form-label">Discount Percentage</label>
+                                    <input step="0.01" value="{{ old('discount_percentage', 0)  }}" name="discount_percentage" type="number" value="0" placeholder="Discount Percentage" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
-@push('script-bot')
+@push("script-bot")
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 @endpush
 
-@push('script-bot')
+@push("script-bot")
     <script>
         $(document).ready(function () {
             $('#yourTable').DataTable({
@@ -89,8 +145,16 @@
                     // Define columns
                 ]
             });
-
+            
         });
+
+        $(document).on('click', '.action-edit', function($this){
+            console.log($(this).data('id'))
+            console.log($(this).data('name'))
+            console.log($(this).data('price'))
+            console.log($(this).data('group-name'))
+            $('#edit-modal').modal('toggle');
+        })
     </script>
 @endpush
 

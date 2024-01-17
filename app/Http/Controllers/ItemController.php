@@ -15,14 +15,25 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
+        $groups = Group::all();
         if($request->ajax()){
             return datatables()->of(Item::all())->addColumn('action', function($item){
                 return 
-                '<i class="action-edit bg-secondary text-white me-1 p-1 bi bi-pencil-square"></i>
-                <i class="action-delete bg-danger text-white p-1 bi bi-trash"></i>';
+                '<i data-id="' . $item->id . '" 
+                    data-name="'.$item->name.'" 
+                    data-description="'.$item->description.'"
+                    data-price="'.$item->price.'" 
+                    data-showing="'.$item->showing.'" 
+                    data-discount-nominal="'.$item->discount_nominal.'"
+                    data-discount-percentage="'.$item->discount_percentage.'" 
+                    data-image="'.$item->image.'"
+                    data-group-name="'.($item->group)->name.'" 
+                    data-group-id="'.$item->group_id.'" 
+                    class="action-edit bg-secondary text-white me-1 p-1 bi bi-pencil-square"></i>
+                <i  data-id="' . $item->id . '" class="action-delete bg-danger text-white p-1 bi bi-trash"></i>';
             })->rawColumns(['action'])->toJson();
         }
-        return view('admin.items');
+        return view('admin.items', compact('groups'));
     }
 
     /**
