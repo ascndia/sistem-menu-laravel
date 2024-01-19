@@ -9,8 +9,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <form method="post" action=" {{ route('item.store') }} "  enctype="multipart/form-data">        
+                <form id="edit-form" method="put"  enctype="multipart/form-data">        
                         @csrf
+                            <input type="hidden" name="id" id="modal-edit-id" value="">
+                            <input type="hidden" name="_method" value="PUT">
                             <div class="mb-3">
                                 <label for="" class="form-label">Item name</label>
                                 <input id="modal-edit-name" name="name" value="{{ old('name') }}" type="text" placeholder="Item name" class="form-control">                                
@@ -35,8 +37,18 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="" class="form-label">Upload Image</label>
-                                <input id="modal-edit-image" name="image" value="{{ old('image') }}" type="file" placeholder="Upload image" class="form-control">
+                                <label for="" class="form-label">Upload New Image</label>
+                                <input id="modal-edit-image" accept="image/*" name="image" value="{{ old('image') }}" type="file" placeholder="Upload image" class="form-control">
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-6 row">
+                                    <label for="" class="form-label">Previous Image</label>
+                                    <img id="modal-previous-image" src="" alt="">    
+                                </div>
+                                <div class="col-6 row">
+                                    <label for="" class="form-label">Preview Image</label>
+                                    <img id="modal-preview-image" src="" alt="">    
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
@@ -48,12 +60,15 @@
                                     <input id="modal-edit-discount-percentage" step="0.01" value="{{ old('discount_percentage', 0)  }}" name="discount_percentage" type="number" value="0" placeholder="Discount Percentage" class="form-control">
                                 </div>
                             </div>
+                            <button type="submit" id="hidden-submit-btn" style="display:none;"></button>
                         </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button id="submit-btn" type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
+
+    

@@ -113,11 +113,11 @@ class ItemController extends Controller
     {
     
         $validator = Validator::make($request->all(),[
-            'name' => 'required|string|unique:items',
-            'price' => 'required|numeric|min:0',
+            'name' => 'nullable|string|unique:items,name,'.$item->id,
+            'price' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'showing' => 'nullable|boolean',
-            'group_id' => 'required|integer',
+            'group_id' => 'nullable|integer',
             'discount_nominal' => 'nullable|integer|min:0',
             'discount_percentage' => 'nullable|numeric|between:0,100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096'
@@ -126,6 +126,7 @@ class ItemController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
+        
         
         if ($request->hasFile('image')){
 
@@ -137,11 +138,16 @@ class ItemController extends Controller
 		    $image = $request->file('image');
 		    $randomid = date('YmdHis') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 		    $path = $image->storeAs('public/images', $randomid);
-		    $item->image = $path;
+		    $item->image = $randomid;
 
 	    }
 
-        return redirect()->route('items.index', $item->id)->with('success', 'Item updated successfully');
+        $item->update($request->only(['name', 'price', 'description', 'image', 'showing', 'group_id', 'discount_nominal', 'discount_percentage']));
+
+        return redirect()->action([ItemController::class, 'index'])->with([
+            'success' => 'Item succesfully updated',
+            'data' => $item
+        ]);
 
     }
 

@@ -13,6 +13,24 @@
 @endpush
 
 @section('main-content')
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        {{ $error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endforeach
+        @endif
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissible">
+                {{ $message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
+
     <div class="container-fluid p-0">
         <h1 class="h3 mb-3"><strong>Item Management</strong></h1>
         <div class="row">
@@ -82,7 +100,10 @@
                     { data: 'description', name: 'description' },
                     { data: 'price', name: 'price' },
                     { data: 'showing', name: 'showing' },
-                    { data: 'image', name: 'image' },
+                    { data: 'image', name: 'image', render: function(data) {
+                        var imageUrl = "{{ asset('storage/images/') }}/" + data;
+                        return `<img src="${imageUrl}" width="20px">`;
+                    } },
                     { data: 'discount_nominal', name: 'discount_nominal' },
                     { data: 'discount_percentage', name: 'discount_percentage' },
                     { data: 'group_id', name: 'group_id' },
@@ -90,11 +111,65 @@
                     // Define columns
                 ]
             });
+
+            $('#edit-modal').on('hide.bs.modal',function(){
+                $('#modal-edit-image').val('')
+                $('#modal-preview-image').attr('src','')
+            })
+
+    
+            $('#modal-edit-image').change(function() {
+                var input = this;
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#modal-preview-image').attr('src', e.target.result);
+                        $('#modal-preview-image').show();
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
+            $('#submit-btn').click(function(){
+                $('#hidden-submit-btn').click()
+            })
+
+            $('#edit-form').submit(function(event){
+                event.preventDefault();
+
+                $('#submit-btn').prop('disabled', true).html(`
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span role="status">Loading...</span>
+                `);
+                
+                const id = $('#modal-edit-id').val()
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '{{ url("admin/item") }}/' + id,
+                    data: $(this).serialize(),
+                    success: function( response ){
+
+                        $('#submit-btn').prop('disabled', false).html(`Save Changes`);
+                        $('#edit-modal').modal('hide')
+
+                    },
+                    error: function(error){
+
+                        console.log(error)
+                        $('#submit-btn').prop('disabled', false).html(`Save Changes`);
+                    }
+
+                })
+            })
             
         });
 
         $(document).on('click', '.action-edit', function() {
-
+            
             let id = $(this).data('id')
             let name = $(this).data('name')
             let price = $(this).data('price')
@@ -111,9 +186,9 @@
             $('#modal-edit-description').val(description)
             $('#modal-edit-discount-nominal').val(dn)
             $('#modal-edit-discount-percentage').val(dp)
-            $('#modal-edit-group').val(gid)
-            $('#modal-edit-group').text(gname)
-            // $('#modal-edit-image').val(image)
+            
+            $('#modal-edit-group').val(gid).change()
+            $('#modal-previous-image').attr('src', "{{ asset('storage/images/') }}/" + image)
             
             $('#edit-modal').modal('toggle')
         })
